@@ -1,0 +1,163 @@
+.footer-container {
+  background-color: #1b1b1b;
+  padding: 50px;
+
+  .ft-top {
+    display: flex;
+   
+    gap: 20px;
+
+    .ft-list--fisrt {
+      width: 340px;
+      margin: auto 0px auto 80px ;
+      .ft-logo {
+        width: 210px;
+        color: white;
+        margin-bottom: 35px;
+      }
+      .ft-list-logo {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        .ft-item-logo {
+          width: 50px;
+        }
+      }
+      .ft-wp-cooperate {
+        display: flex;
+        align-items: center;
+        border: 2px solid white;
+        padding: 7px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        width: 250px;
+        .cooperate__img {
+          width: 30px;
+          margin-right: 20px;
+        }
+        .ft-cooperate-title {
+          color: white;
+          font-size: 1.4rem;
+        }
+      }
+      .ft-pay-cart {
+        font-weight: 500;
+        font-size: 2rem;
+        color: white;
+        margin-bottom: 10px;
+      }
+      .ft-list-cartPay {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        .ft-item-cart-wp {
+          width: 67px;
+          height: 50px;
+          background-color: white;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .ft-item-cart {
+            width: 40px;
+          }
+        }
+      }
+    }
+  }
+  .ft-wp-list {
+    margin-left: 90px;
+    display: grid;
+    grid-template-columns: 208px 208px 208px;
+    gap:50px;
+    width:  100%;
+    .ft-list {
+      .ft-about {
+        .list-ft-about {
+          .item-ft-about {
+            color: #898b8b;
+            margin: 15px auto;
+
+          }
+          .item-ft-about:hover {
+            color: white;
+            text-decoration: underline;
+            margin: 15px auto;
+          }
+          .item-ft-about--title{
+          
+            color: white;
+            font-size: 1.9rem;
+            font-weight: 500;
+          }
+        }
+      }
+      .ft-about{
+        margin-top: 30px;
+        .list-ft-contec{
+          .ft-contec-item-wp{
+            color: white;
+            margin: 15px auto;
+            font-size: 1.9rem;
+            font-weight: 500;
+           
+            .ft-connec--icon{
+              font-size: 30px;
+              margin-right: 30px;
+              opacity: 0.5;
+            }
+            .ft-connec--icon:hover{
+              font-size: 30px;
+              margin-right: 30px;
+              opacity: 1;
+            }
+            .ft-conect-name{
+              color: #898b8b;
+              font-weight: 500;
+              font-size: 1.6rem;
+              
+
+            }
+            .ft-conect-name:hover{
+              text-decoration: underline;
+              color: white;
+
+            }
+          }
+        }
+      }
+      .ft-app-title{
+        color: white;
+        margin: 15px auto;
+        font-size: 1.9rem;
+        font-weight: 500;
+      }
+        .ft-app-img{
+          margin-top: 10px;
+          opacity: 0.5;
+        }
+        .ft-app-img:hover{
+          opacity: 1;
+        }
+    }
+  }
+  .ft--bootom{
+    border-top : 1px solid #363636;
+
+    margin-top: 30px;
+    .ft-adress{
+      text-align: center;
+      margin: 10px auto;
+      font-weight: 500;
+      font-size: 1.2rem;
+      color: white;
+      opacity: 0.5;
+    }
+    .Copyring{
+      text-align: center;
+      color: white;
+    }
+
+  }
+}
