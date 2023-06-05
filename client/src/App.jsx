@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { publicRoutes, privateRoutes } from "./routers/index.jsx";
 import DefaultLayout from "./component/Layout/index.jsx";
 import PriviteRouter from "./routers/PriviteRouter.jsx";
+import Admin from "./component/Page/Admin/Admin.jsx";
 function App() {
   return (
     <>
@@ -9,6 +10,7 @@ function App() {
         <div className="app">
           <Routes>
             {/* publicRoutes */}
+
             {publicRoutes.map((route, index) => {
               const Layout = route.layout || DefaultLayout;
               const Page = route.component;
@@ -24,11 +26,13 @@ function App() {
                 />
               );
             })}
+            
 
-            <Route element={ <PriviteRouter/>  }>
+            <Route element={<PriviteRouter />}>
               {privateRoutes.map((route, index) => {
-                const Layout = route.layout || DefaultLayout;
                 const Page = route.component;
+                const Layout = Admin;
+
                 return (
                   <Route
                     key={index}

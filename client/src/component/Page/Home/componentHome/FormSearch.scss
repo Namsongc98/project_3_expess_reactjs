@@ -1,0 +1,23 @@
+.wp-search {
+  border: 1px solid #0082e4;
+  -webkit-box-shadow: 5px 3px 17px 0px #000000; 
+  box-shadow: 5px 3px 17px 0px #000000;
+  border-radius: 5px ;
+
+   .wp__icon__search {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  .wp-input {
+      border: 1px solid grey;
+      border-radius: 5px;
+     
+  }
+  .btn-form{
+    border-radius:5px;
+    background-color: #0082e4;
+    color: white;
+    line-height: 40px;
+
+  }
+}

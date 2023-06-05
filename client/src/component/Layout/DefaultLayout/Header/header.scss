@@ -1,13 +1,91 @@
-.bnt__register{
-    width: 100px;
-    height: 30px;
-    
+.bnt__register {
+  width: 100px;
+  height: 30px;
 }
-.head-flag:hover{
-    background-color: #f2f3f3;
-    border-radius: 4px;
-    
+.head-flag:hover {
+  background-color: #f2f3f3;
+  border-radius: 4px;
 }
-.head__flag{
-    font-size: 24px;
+.head__flag {
+  font-size: 24px;
 }
+
+// toggle vận truyển
+.popup-transport.activeTransport {
+  opacity: 1;
+  visibility: visible;
+  height: 350px;
+  transition: 1000ms ease;
+}
+.popup-transport.inactiveTransport {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  transition: 4s ease;
+  transition: 500ms ease;
+}
+//toggle  chỗ ở
+.popupLive {
+  .activeLive {
+    opacity: 1;
+    visibility: visible;
+    height: 100px;
+    transition: 500ms ease;
+  }
+  .inactiveLive {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    transition: 4s ease;
+    transition: 500ms ease;
+  }
+}
+//toggle Entertaiment
+.popupEntertainment {
+  .activeEntertainment {
+    opacity: 1;
+    visibility: visible;
+    height: 150px;
+    transition: 500ms ease;
+  }
+  .inactiveEntertainment {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    transition: 4s ease;
+    transition: 500ms ease;
+  }
+}
+// toogler sản phẩm
+.popupProduct {
+  .activeProduct {
+    opacity: 1;
+    visibility: visible;
+    height: 100px;
+    transition: 500ms ease;
+  }
+  .inactiveProduct {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    transition: 4s ease;
+    transition: 500ms ease;
+  }
+}
+
+.popupProfile {
+  .activeProfile {
+    opacity: 1;
+    visibility: visible;
+    height: 100px;
+    transition: 500ms ease;
+  }
+  .inactiveProfile {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    transition: 4s ease;
+    transition: 500ms ease;
+  }
+}
+

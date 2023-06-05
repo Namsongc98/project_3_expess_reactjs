@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import logo_tralver from "../../../../assets/images/logo_tralver.svg";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -8,20 +8,15 @@ import Diversity1Icon from "@mui/icons-material/Diversity1";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
 import "./header.scss";
+import Transport from "./dropDonw/Transport";
+import Live from "./dropDonw/Live";
+import Entertainment from "./dropDonw/Entertainment";
+import Product from "./dropDonw/Product";
+import { Link } from "react-router-dom";
+import DropProfile from "./dropDonw/DropProfile";
 function Header() {
-  const [isToggleTransport,setIoggleTransport]=useState(false)
-  const [isToggleLive,setIoggleLive]=useState(false)
-  const [isToggleEntertainment,setIoggleEntertainment]=useState(false)
-  const [isToggleAddProduct,setIoggleAddProduct]=useState(false)
-  const [isToggleApp,setIoggleApp]=useState(false)
-  const [isToggleCoutry,setIoggleCoutry]=useState(false)
-  const [isToggleLogin,setIoggleLogin]=useState(false)
-  const [isToggleMenu,setIoggleMenu]=useState(false)
   
-
-
 
   return (
     <div className=" ">
@@ -44,7 +39,7 @@ function Header() {
                 <SecurityUpdateIcon className="text-sky-500" />
               </div>
               <p className="cursor-pointer">Tải ứng dụng</p>
-              <ArrowDropDownIcon />
+            
             </li>
             <li className="flex justify-between items-center gap-2">
               <div className="">
@@ -70,43 +65,34 @@ function Header() {
                 <img src={flag_VN} alt="flag_VN" />
               </div>
               <p className="cursor-pointer">VND</p>
-              <ArrowDropDownIcon />
+             
             </li>
-            <li className="flex justify-between items-center gap-2">
+            <li >
+              <Link to="/login" className="flex justify-between items-center gap-2">
               <div className="">
                 <AccountCircleIcon style={{ fontSize: "24px" }} />
               </div>
               <p className="cursor-pointer">Đăng nhập</p>
-              <ArrowDropDownIcon />
+              <ArrowDropDownIcon/>
+              </Link>
             </li>
+            <DropProfile/>
+           
             <li className="">
-              <button className="bnt__register bg-sky-500 block rounded-md text-white">
+              <Link to="/register" className="bnt__register bg-sky-500 block rounded-md text-center leading-[30px] text-white">
                 Đăng Kí
-              </button>
+              </Link>
             </li>
           </ul>
         </div>
       </div>
+
       <div className=" w-full px-10  bg-[#f2f3f3] p-2 ">
         <ul className="flex items-center gap-20 h-14">
-          <li className="flex items-center cursor-pointer">
-            <h1 className="font-medium  ">Vận chuyển </h1>
-            <ArrowDropDownIcon />
-          </li>
-          <li className="flex items-center cursor-pointer">
-            <h1 className="font-medium ">Chỗ ở</h1>
-            <ArrowDropDownIcon />
-          </li>
-          <li className="flex items-center cursor-pointer">
-            <h1 className="font-medium ">
-              Hoạt động và giải trí{" "}
-            </h1>
-            <ArrowDropDownIcon />
-          </li>
-          <li className="flex items-center cursor-pointer">
-            <h1 className="font-medium ">Sản phẩm bổ sung </h1>
-            <ArrowDropDownIcon />
-          </li>
+          <Transport/>
+          <Live/>
+          <Entertainment/>
+          <Product/>
         </ul>
       </div>
     </div>

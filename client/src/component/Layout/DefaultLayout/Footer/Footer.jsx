@@ -13,7 +13,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { arrImgFt,appStorenew,appGoolenew } from "./imgFooter.jsx";
 function Footer() {
   return (
-    <div className="footer-container">
+    <div className="footer-container mt-10">
       <div className="ft-top">
         <div className="ft-list--fisrt">
           <img src={logo} alt="" className="ft-logo" />

@@ -1,15 +1,16 @@
 import React from 'react'
 import { Outlet } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 function PriviteRouter() {
-    let useAuth = true;
+    let addmin = true;
 
-    if(useAuth){
-      
-    }
   return (
-    useAuth ? <Outlet/>:<></>
+    addmin ? <Outlet/>:<Link to="/login"></Link>
+   
+    
+    
   )
 }
 
