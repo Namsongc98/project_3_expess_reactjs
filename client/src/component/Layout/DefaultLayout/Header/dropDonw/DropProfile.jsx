@@ -1,31 +1,41 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import { useDispatch, useSelector } from "react-redux";
+import { cleanState, logout } from "../../../../../app/useSlice";
 
 function DropProfile() {
+  const dispatch = useDispatch()
+  const displayUser = useSelector((state) => state.user.loginUser?.data);
   const [dropProfile, setDropProfile] = useState(false);
   const refWapper = useRef();
-  useEffect(()=>{
-    let handleClose = (e)=>{
-      if(!refWapper.current.contains(e.target)){
-        setDropProfile(false)
+  const navigate = useNavigate()
+  useEffect(() => {
+    let handleClose = (e) => {
+      if (!refWapper.current.contains(e.target)) {
+        setDropProfile(false);
       }
-    }
-    document.addEventListener("mousedown",handleClose)
-    return ()=>{
-      document.removeEventListener("mousedown",handleClose)
-    }
-  },[])
+    };
+    document.addEventListener("mousedown", handleClose);
+    return () => {
+      document.removeEventListener("mousedown", handleClose);
+    };
+  }, []);
+
+  const handleLogout = () => {
+   dispatch(cleanState())
+   dispatch(logout())
+   navigate("/login")
+  };
 
   return (
     <>
-      <li className="flex items-center cursor-pointer relative popupProfile">
-        <Link
-          to="/login"
+      <li className="flex items-center cursor-pointer relative popupProfile mr-10">
+        <div
+          to=""
           className="flex justify-between items-center gap-2"
           ref={refWapper}
           onClick={() => setDropProfile(!dropProfile)}
@@ -33,9 +43,12 @@ function DropProfile() {
           <div className="">
             <AccountCircleIcon style={{ fontSize: "24px" }} />
           </div>
-          <p className="cursor-pointer">Ngọc Sơn</p>
+          <p className="cursor-pointer">
+            {displayUser?.firstname}
+            <span className="ml-[6px]">{displayUser?.lastname}</span>
+          </p>
           <ArrowDropDownIcon />
-        </Link>
+        </div>
         <div
           className={` absolute w-80 rounded-md bg-white top-10  ${
             dropProfile ? `activeProfile` : `inactiveProfile`
@@ -51,7 +64,10 @@ function DropProfile() {
                 <span className="font-thin text-2xl">Hồ sơ</span>
               </Link>
             </li>
-            <li className="popup-transportitem hover:bg-gray-200 p-2">
+            <li
+              className="popup-transportitem hover:bg-gray-200 p-2"
+              onClick={handleLogout}
+            >
               <PowerSettingsNewIcon
                 className="text-blue-500 mr-5 font-normal"
                 style={{ fontSize: "24px" }}

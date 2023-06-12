@@ -8,18 +8,15 @@ function HeadAdmin() {
    const navigate = useNavigate ()
   
 
-
-
-
   return (
     <div className="wp-headerAdmin flex justify-between items-center h-[60px] px-8 bg-[#f2f3f3]">
       <img src={logoTraveloka} alt="" />
-      <div className=" flex justify-evenly items-center w-[600px] ">
-      <NavLink to="/adminrom" className="font-medium text-3xl">
-       Quản lí khách hàng
+      <div className=" flex justify-evenly items-center w-[100%] ">
+      <NavLink to="/admin" className="font-medium text-3xl">
+       Quản lí phòng khách sạn
       </NavLink>
       <NavLink to="/adminuser" className="font-medium text-3xl">
-        Quản lí phòng
+        Quản lí khách hàng
       </NavLink>
       <NavLink to="/adminorder" className="font-medium text-3xl ">
         Quản lí đơn hàng

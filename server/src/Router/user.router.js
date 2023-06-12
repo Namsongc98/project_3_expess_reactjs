@@ -1,61 +1,19 @@
 const express = require("express");
-const routerUser = express.Router();
-const connection = require("../concectDatabase.js");
-const bodyParser = require("body-parser");
-const { v4: uuidv4 } = require("uuid");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const router = express.Router();
+const Usercontroller = require("../Controller/UserController.js");
+const Authcontroller = require("../Controller/authController.js")
+const validateUser = require("../Midlware/validaterUser.js")
+const validateLogin = require("../Midlware/validaterUser.js")
+const resultValidationUser =  require("../Midlware/validaterUser.js");
+const resultValidationLogin =  require("../Midlware/validaterUser.js");
+const AuthorizationUser = require("../Midlware/AuthenticationUser.js");
 
-routerUser.use(bodyParser.json());
-routerUser.use(bodyParser.urlencoded({ extended: true }));
+// router user
+router.get("/",AuthorizationUser,Usercontroller.getUsers );
+router.get("/:id",AuthorizationUser,Usercontroller.getOneUser);
+router.post("/post/register",validateUser.validateUser,resultValidationUser.resultValidationUser,Usercontroller.postUser );
+router.post("/post/login",validateLogin.validateLogin,resultValidationLogin.resultValidationLogin, Authcontroller);
+router.put("/put/:id",AuthorizationUser,Usercontroller.putUser);
+router.delete("/delete/:id",AuthorizationUser,Usercontroller.deleteUser)
 
-routerUser.get("/", (req, res) => {
-  const query = "SELECT * FROM module_3.users";
-  connection.query(query, (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: "lỗi",
-        err: err,
-      });
-    } else {
-      res.status(200).json({
-        status: "thành công",
-        data: result,
-      });
-    }
-  });
-});
-
-
-routerUser.post("/",  (req, res) => {
-  const { firstname, lastname, email_user, password_user } = req.body;
-  const id_user = uuidv4();
-  bcrypt.hash(password_user, 10, (err, hash) => {
-    if (err) {
-      res.status(500).json({
-        status: 500,
-        messager: err,
-      });
-    } else {
-      const values = [id_user, firstname, lastname, email_user, hash];
-      const query =
-        "insert into module_3.users (id_user,firstname, lastname, email_user, password_user) values (?,?,?,?,?)";
-      connection.query(query, values, (err) => {
-        if (err) {
-          res.status(500).json({
-            status: 500,
-            messager: err,
-          });
-        } else {
-          res.status(200).json({
-            status: 200,
-            messager: "Post thành công",
-          });
-        }
-      });
-    }
-  });
-});
-
-module.exports = routerUser;
+module.exports = router;

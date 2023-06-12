@@ -1,17 +1,17 @@
-const mysql = require("mysql")
+const mysql = require("mysql");
+require("dotenv").config();
 const connection = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    database:"module_3",
-    password:"12345678",
+  host: process.env.HOST,
+  user: process.env.USER,
+  database: process.env.DATABASE,
+  password: process.env.PASSWOED,
 });
 
-// connection.connect((err)=>{
+// connection.connect((err,result)=>{
 //     if(err){
-//         console.log("lỗi kết nối")
+//         console.log("lỗi")
 //     }else{
-//         console.log("kết nối thành công")
+//         console.log("thành công")
 //     }
 // })
-
-module.exports = connection
+module.exports = connection;

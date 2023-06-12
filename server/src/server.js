@@ -1,21 +1,17 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-
 const server = express();
+const cors = require("cors");
 const hostName = "localhost";
-const port = 8080;
-const routerUser = require("./Router/user.router.js")
-
+const port = process.env.PORT || 8080;
+const router = require("./Router/index.js")
+server.use(express.static("/public"));
+require("dotenv").config()
+server.use(cors());
+const bodyParser = require("body-parser");
 server.use(bodyParser.urlencoded({ extended: true}));
 server.use(bodyParser.json());
-server.use(cors());
 
-server.use("/api/v1/users",routerUser)
-
-server.get("/",(req,res)=>{
- res.send("hello");
-})
+server.use("/",router)
 
 
 server.listen(port,()=>{

@@ -1,24 +1,93 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
+import "./Admin.scss";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function AdminUser() {
-  return (
-    <div className="">
-      <div className="">
-        <h1 className=""></h1>
-      </div>
-      <div className="">
-        <div className="">
+  const [userData, setUserData] = useState();
 
-        </div>
-        <table className="">
-          <tbody className="">
-            <tr className="">
-              <th className="">Stt</th>
-              <th className="">Họ và Tên </th>
-              <th className=""> </th>
-              <th className=""></th>
+  let accepToken = useSelector((state) => state.user.loginUser.token);
+
+  const dataUser = async (accepToken) => {
+    try {
+      const response = await axios.get("http://localhost:8080/users", {
+        headers: { token: `Bearer ${accepToken}` },
+      });
+      setUserData(response.data.data);
+      return userData;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error);
+    }
+  };
+
+  useEffect(() => {
+    dataUser(accepToken);
+  }, []);
+
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+
+    try {
+      await axios.delete("http://localhost:8080/users/delete/" + id, {
+        headers: { token: `Bearer ${accepToken}` },
+      });
+      dataUser(accepToken);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  const handleEdit = () => {
+    e.preventDefault();
+  };
+  console.log(userData);
+
+
+  return (
+    <div className="mt-10">
+      <div className="w-[100%] h-[60px] text-4xl font-semibold text-blue-800 ">
+        <h1 className="text-center leading-[60px] hover:underline  hover:decoration-solid">
+          List Khách hàng
+        </h1>
+      </div>
+      <div className="wp-table w-[100%] ">
+        <table className=" table w-[100%]">
+          <thead className="head-table bg-gray-200 ">
+            <tr>
+              <th>STT</th>
+              <th>Họ và tên</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th> Xóa</th>
+              <th>Sửa </th>
             </tr>
+          </thead>
+          <tbody>
+            {userData?.map((user, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{user.firstname + " " + " " + user.lastname}</td>
+                <td>{user.email_user}</td>
+                <td>{user.roles}</td>
+                <td>
+                  <button
+                    onClick={(e) => handleDelete(e, user.id_user)}
+                    className="btn btn-delete"
+                  >
+                    Xóa
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={(e) => handleEdit(e)}
+                    className="btn btn-edit"
+                  >
+                    Sửa
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

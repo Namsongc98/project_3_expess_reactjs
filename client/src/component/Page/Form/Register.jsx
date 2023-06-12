@@ -1,35 +1,105 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./form.scss";
+
 import phone_coin from "../../../assets/images/phone_coin.svg";
 import ticket from "../../../assets/images/ticket.svg";
 import pay_register from "../../../assets/images/pay_register.svg";
 import ticket_arworr from "../../../assets/images/ticket_arworr.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import axios from "axios";
+import { cleanState, logout, postUser } from "../../../app/useSlice";
 
 function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [emailUser, setEmailUser] = useState("");
-  const [passwordUser, setPasswordUser] = useState("");
-  const [phoneUser, setPhoneUser] = useState("");
+  //lấy giá trị input
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [email_user, setEmailUser] = useState("");
+  const [password_user, setPasswordUser] = useState("");
 
+  //khởi tạo check validate
+  const [checkExist, setExist] = useState(false);
+  const [alertEmail, setAlertEmail] = useState(false);
+  const [checkAlertPassword, setAlertPassword] = useState(false);
+  const [sameEmail, setSameEmail] = useState(false);
+  //
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+
+  // regex_patter
   const regexEmai = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
   const regexPassword = /^[a-zA-Z0-9_\s]{6,}$/;
-  
-  const checkEmail = regexEmai.test(emailUser);
-  const checkPassword = regexPassword.test(passwordUser);
+  //test regex
+  const checkEmail = regexEmai.test(email_user);
+  const checkPassword = regexPassword.test(password_user);
+  //check validate cho register
+
+  const checkErr = useSelector((state) => state.user.error);
+
+  const newUser = {
+    firstname: firstname,
+    lastname: lastname,
+    email_user: email_user,
+    password_user: password_user,
+    roles: "user",
+  };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!firstName || !lastName || !emailUser || !passwordUser) {
-      console.log("không được để trống");
+    if (!firstname || !lastname || !email_user || !password_user) {
+      return handleExist();
     } else if (!checkEmail) {
-      console.log(checkEmail);
+      return handleEmail();
     } else if (!checkPassword) {
-      console.log(checkPassword);
+      return handlePassword();
     } else {
-      console.log("ok");
+      dispatch(postUser(newUser,navigate));
     }
+  };
+
+
+
+  useEffect(() => {
+    dispatch(cleanState());
+  }, [dispatch]);
+
+  //snackbar-------------
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const handleExist = () => {
+    setExist(true);
+  };
+  const handleEmail = () => {
+    setAlertEmail(true);
+  };
+  const handlePassword = () => {
+    setAlertPassword(true);
+  };
+  const handleSameEmail = () => {
+    setSameEmail(true);
+  };
+  useEffect(() => {
+    if (checkErr) {
+      handleSameEmail();
+    }
+  }, [checkErr]);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setExist(false);
+    setSameEmail(false);
+    setAlertPassword(false);
+    setAlertEmail(false);
   };
 
   return (
@@ -45,7 +115,7 @@ function Register() {
       <div className=" grid grid-cols-3 p-10 gap-5">
         <div className=" ">
           <img src={phone_coin} alt="" className="w-16 mb-5" />
-          <h2 className="font-bold text-4xl ">Nhận thưởng khi đăỵ chỗ</h2>
+          <h2 className="font-bold text-4xl ">Nhận thưởng khi đặt chỗ</h2>
           <h4 className="leading-10">
             Tích điểm cho mỗi lần đặt vé và phòng khách sạn. Quy đổi để du lịch
             tiết kiệm hơn!
@@ -88,62 +158,125 @@ function Register() {
         <div className=""></div>
       </div>
       <div className="w-[400px]  bg-white shadow-slate-500 absolute p-8 flex flex-col  wp-register-form top-20 right-8">
-        <form action="" onSubmit={(e) => handleSubmit(e)}>
+        <form
+          action="http://localhost:8080/users/post/register"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <h1 className="font-semibold text-4xl text-center">
             Đăng Kí Thành Viên Tralveroka!
           </h1>
-          <div className="flex font-semibold text-2xl justify-between my-5">
+
+          <div className="flex   justify-between my-5">
             <div className="">
-              <label>Firstname</label>
+              <label htmlFor="firstname" className="font-semibold">
+                First name
+              </label>
               <input
+                id="firstname"
                 className="input__form w-[160px] h-[40px] mt-2 outline-none p-2"
-                value={firstName}
+                value={firstname}
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
+
             <div className="">
-              <label>Lastname</label>
+              <label htmlFor="lastname" className="font-semibold">
+                Lastname
+              </label>
               <input
+                id="lastname"
                 className="input__form  h-[40px] w-[160px] mt-2 outline-none p-2"
-                value={lastName}
+                value={lastname}
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
           </div>
+
           <div className="">
-            <div className=" font-semibold text-2xl my-5">
-              <label>Email</label>
+            <div className="   my-5">
+              <label className="font-semibold">Email</label>
               <br />
               <input
                 className="input__form  h-[40px] w-[340px] mt-2 outline-none p-2"
-                value={emailUser}
+                value={email_user}
                 onChange={(e) => setEmailUser(e.target.value)}
               />
             </div>
-            <p className="text-xl">
-              Email không chứa kí tự đặc biệt và không được để trống
-            </p>
-            <div className=" font-semibold text-2xl my-5">
-              <label>Password</label>
+
+            <div className="  my-5">
+              <label className=" font-semibold ">Password</label>
               <br />
               <input
                 className="input__form  h-[40px] w-[340px] mt-2 outline-none p-2"
-                value={passwordUser}
+                value={password_user}
                 onChange={(e) => setPasswordUser(e.target.value)}
               />
             </div>
-            <p className="text-xl">
-              Password không chứa kí tự đặc biệt và trên 6 kí tự
-            </p>
-           
           </div>
+
           <div className="">
             <button className="btn__register">Tham gia</button>
           </div>
         </form>
+        <Stack spacing={3} sx={{ width: "100%" }}>
+          <Snackbar
+            open={checkExist}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Vui lòng nhập đầy đủ thông tin
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={alertEmail}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Vui lòng nhập đúng trường Email
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={checkAlertPassword}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Vui lòng nhập password trên 6 kí tự
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={sameEmail}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {checkErr}
+            </Alert>
+          </Snackbar>
+        </Stack>
         <div className="footer__register ">
-          <span>Bạn Đăng Kí Chưa?</span>  <Link to="/login" className="font-medium text-blue-600 ">Đăng nhập</Link>
-         
+          <span>Bạn Đăng Kí Chưa?</span>
+          <Link to="/login" className="font-medium text-blue-600 ">
+            Đăng nhập
+          </Link>
         </div>
       </div>
     </div>

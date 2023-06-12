@@ -1,16 +1,17 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 
 function PriviteRouter() {
-    let addmin = true;
 
+ 
+  //  const isAdmin = useSelector((state) => state.user.loginUser.data?.roles);
+   const isAdmin =true
   return (
-    addmin ? <Outlet/>:<Link to="/login"></Link>
-   
-    
-    
+    isAdmin ? <Outlet/>:<Link to="/login"></Link>
   )
 }
 

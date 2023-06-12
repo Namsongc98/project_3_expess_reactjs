@@ -15,8 +15,10 @@ import Entertainment from "./dropDonw/Entertainment";
 import Product from "./dropDonw/Product";
 import { Link } from "react-router-dom";
 import DropProfile from "./dropDonw/DropProfile";
+import { useSelector } from "react-redux";
 function Header() {
-  
+  const displayUser = useSelector((state) => state.user.status);
+
 
   return (
     <div className=" ">
@@ -39,7 +41,6 @@ function Header() {
                 <SecurityUpdateIcon className="text-sky-500" />
               </div>
               <p className="cursor-pointer">Tải ứng dụng</p>
-            
             </li>
             <li className="flex justify-between items-center gap-2">
               <div className="">
@@ -65,34 +66,43 @@ function Header() {
                 <img src={flag_VN} alt="flag_VN" />
               </div>
               <p className="cursor-pointer">VND</p>
-             
             </li>
-            <li >
-              <Link to="/login" className="flex justify-between items-center gap-2">
-              <div className="">
-                <AccountCircleIcon style={{ fontSize: "24px" }} />
-              </div>
-              <p className="cursor-pointer">Đăng nhập</p>
-              <ArrowDropDownIcon/>
-              </Link>
-            </li>
-            <DropProfile/>
-           
-            <li className="">
-              <Link to="/register" className="bnt__register bg-sky-500 block rounded-md text-center leading-[30px] text-white">
-                Đăng Kí
-              </Link>
-            </li>
+            {displayUser ? (
+              <DropProfile />
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="flex justify-between items-center gap-2"
+                  >
+                    <div className="">
+                      <AccountCircleIcon style={{ fontSize: "24px" }} />
+                    </div>
+                    <p className="cursor-pointer">Đăng nhập</p>
+                    <ArrowDropDownIcon />
+                  </Link>
+                </li>
+                <li className="">
+                  <Link
+                    to="/register"
+                    className="bnt__register bg-sky-500 block rounded-md text-center leading-[30px] text-white"
+                  >
+                    Đăng Kí
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
 
       <div className=" w-full px-10  bg-[#f2f3f3] p-2 ">
         <ul className="flex items-center gap-20 h-14">
-          <Transport/>
-          <Live/>
-          <Entertainment/>
-          <Product/>
+          <Transport />
+          <Live />
+          <Entertainment />
+          <Product />
         </ul>
       </div>
     </div>

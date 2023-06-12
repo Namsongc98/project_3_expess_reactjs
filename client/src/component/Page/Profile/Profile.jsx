@@ -105,28 +105,15 @@ function Profile() {
               </div>
 
               <div className="flex flex-col mb-6 w-[20%] text-2xl ">
-                <label htmlFor="">Ngày sinh </label>
-                <select className="h-[40px] wp-input w-[100%]  pl-2 outline-none mt-4 ">
-                  <option value="">--Chọn ngày sinh --</option>
-                  <option value="">nam</option>
-                  <option value="">nữ</option>
-                </select>
+                <label htmlFor="">Ngày tháng năm sinh </label>
+                <input type="date" className="h-[40px] wp-input w-[100%]  pl-2 outline-none mt-4 "/>
+                 
+              
               </div>
+            
               <div className="flex flex-col mb-6 w-[20%] text-2xl ">
-                <label htmlFor=""> Tháng sinh </label>
-                <select className="h-[40px] wp-input w-[100%]  pl-2 outline-none mt-4 ">
-                  <option value="">--Chọn tháng sinh--</option>
-                  <option value="">nam</option>
-                  <option value="">nữ</option>
-                </select>
-              </div>
-              <div className="flex flex-col mb-6 w-[20%] text-2xl ">
-                <label htmlFor="">Năm sinh </label>
-                <select className="h-[40px] wp-input w-[100%]  pl-2 outline-none mt-4 ">
-                  <option value="">--Chọn năm sinh--</option>
-                  <option value="">nam</option>
-                  <option value="">nữ</option>
-                </select>
+                <label htmlFor="">Tuổi </label>
+                <input type="number" className="h-[40px] wp-input w-[100%]  pl-2 outline-none mt-4 "/>
               </div>
             </div>
             <div className="w-[100%]">
