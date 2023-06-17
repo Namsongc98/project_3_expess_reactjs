@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 const AuthorizationUser = (req, res, next) => {
   const authorization = req.headers.token.split(" ")[1];
   if (!authorization) {
@@ -20,4 +19,4 @@ const AuthorizationUser = (req, res, next) => {
   }
 };
 
-module.exports = AuthorizationUser;
+module.exports = AuthorizationUser

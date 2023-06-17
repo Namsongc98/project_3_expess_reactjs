@@ -67,7 +67,7 @@ const postUser = (req, res) => {
                   { id: findUser.id_user },
                   process.env.SECRET,
                   {
-                    expiresIn: "1h",
+                    expiresIn: "7d",
                   }
                 );
                 res.status(200).json({
@@ -77,10 +77,8 @@ const postUser = (req, res) => {
                 });
               }
             });
-          } else {
-            
+          } else {    
             return res.status(400).json({
-              
               status: 400,
               message: "Trùng Email",
             });

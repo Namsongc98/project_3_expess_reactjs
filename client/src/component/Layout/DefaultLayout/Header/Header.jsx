@@ -13,22 +13,33 @@ import Transport from "./dropDonw/Transport";
 import Live from "./dropDonw/Live";
 import Entertainment from "./dropDonw/Entertainment";
 import Product from "./dropDonw/Product";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DropProfile from "./dropDonw/DropProfile";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../../app/useSlice";
 function Header() {
-  const displayUser = useSelector((state) => state.user.status);
+  const userData = useSelector((state) => state.user.loginUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const handleRegister = () => {
+    dispatch(logout());
+    navigate("/register");
+  };
 
+  const handleLogin=()=>{
+    dispatch(logout());
+    navigate("/login");
+  }
   return (
     <div className=" ">
       <div className=" flex justify-between items-center h-14 m-6 ">
         <div className=" flex gap-4 items-center">
           <div className="">
-            <MenuIcon
+            {/* <MenuIcon
               className="text-sky-500  head__flag"
               style={{ fontSize: "30px" }}
-            />
+            /> */}
           </div>
           <div className="">
             <img src={logo_tralver} alt="" />
@@ -67,21 +78,22 @@ function Header() {
               </div>
               <p className="cursor-pointer">VND</p>
             </li>
-            {displayUser ? (
+            {userData.id_user ? (
               <DropProfile />
             ) : (
               <>
                 <li>
-                  <Link
-                    to="/login"
+                  <button
+          
                     className="flex justify-between items-center gap-2"
+                    onClick={handleLogin}
                   >
                     <div className="">
                       <AccountCircleIcon style={{ fontSize: "24px" }} />
                     </div>
                     <p className="cursor-pointer">Đăng nhập</p>
                     <ArrowDropDownIcon />
-                  </Link>
+                  </button>
                 </li>
                 <li className="">
                   <Link

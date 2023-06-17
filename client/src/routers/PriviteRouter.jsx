@@ -8,10 +8,11 @@ import { Link, useNavigate } from 'react-router-dom';
 function PriviteRouter() {
 
  
-  //  const isAdmin = useSelector((state) => state.user.loginUser.data?.roles);
-   const isAdmin =true
+    const isAdmin = useSelector((state) => state.user.loginUser?.roles);
+
+  
   return (
-    isAdmin ? <Outlet/>:<Link to="/login"></Link>
+    isAdmin==="admin" ? <Outlet/>:<Link to="/login"></Link>
   )
 }
 

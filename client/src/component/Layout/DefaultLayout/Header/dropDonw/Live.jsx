@@ -31,7 +31,7 @@ function Live() {
             </h1>
             <ArrowDropDownIcon />
             <div
-              className={` absolute w-80 rounded-md bg-white top-10 ${
+              className={` absolute w-80 rounded-md bg-white top-10 z-[10] ${
                 isToggleLive ? `activeLive` : `inactiveLive`
               } `}
             >

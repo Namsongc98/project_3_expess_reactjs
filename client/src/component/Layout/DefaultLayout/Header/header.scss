@@ -77,7 +77,7 @@
   .activeProfile {
     opacity: 1;
     visibility: visible;
-    height: 100px;
+    height: auto;
     transition: 500ms ease;
   }
   .inactiveProfile {

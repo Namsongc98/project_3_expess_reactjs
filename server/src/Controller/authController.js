@@ -27,7 +27,7 @@ const postLogin = (req, res) => {
             if (err) {
               return res.status(500).json({
                 status: 500,
-                message: err,
+                message:"mật khẩu không đúng",
               });
             } else {
               if (!isMatch) {
@@ -38,7 +38,7 @@ const postLogin = (req, res) => {
               } else {
                 //Authorization
                 const token = jwt.sign({ id: user.id_user,roles:"user" }, process.env.SECRET, {
-                  expiresIn: "4h",
+                  expiresIn: "7d",
                 });
                return res.status(200).json({
                   status: 200,

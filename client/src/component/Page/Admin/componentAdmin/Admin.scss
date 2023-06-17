@@ -14,6 +14,8 @@
       tr {
         th {
           padding: 10px;
+          font-size: medium;
+          font-weight: 500;
         }
       }
     }
@@ -23,6 +25,8 @@
           padding: 10px;
           text-align: center;
           border-bottom: 1px solid rgb(220, 218, 218);
+          font-size: smaller;
+          font-weight: 500;
         }
       }
     }
@@ -48,4 +52,36 @@
   border: 1px solid rgb(209, 208, 208);
   border-radius: 5px;
   padding: 5px;
+}
+.wp-nav {
+  .nav-infor {
+    border-bottom:1px solid white; 
+    .nav-wp-img {
+      margin: 0 auto;
+      overflow: hidden;
+      width: 100px;
+      border-radius: 50%;
+      height: 100px;
+      .img-infor {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }
+}
+.containerUpdate{
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba($color: #000000, $alpha: 0.7);
+  .wp-form-Update{
+
+    background-color: white;
+    border: 1px solid rgb(185, 184, 184);
+    padding: 20px;
+    border-radius: 8px;
+  }
+
 }

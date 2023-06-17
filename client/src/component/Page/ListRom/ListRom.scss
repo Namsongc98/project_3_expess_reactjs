@@ -9,24 +9,27 @@
         align-items: center;
     
 }
-
 .wp-cart{
     border: 1px solid gray;
-  
-   
+    grid-template-columns: 130px auto auto;
     .btn-stayHome{
-        border-radius: 5px;
-        width: 10rem;
+        border-radius: 8px;
+        width: 50px;
+        height: 20px;
         background-color: #007ce8;
         text-align: center;
         font-weight: 500;
         padding: 5px;
         color: white;
-        margin-top: 20px;
-
+    }
+    .wp-free{
+   width: 120px;    
+   height: 25px;
+   border-radius: 6px;
+   
     }
    .wp-pay{
     border-left: 1px solid gray ;
    }
-    grid-template-columns: 127px auto 150px;
+    
 }

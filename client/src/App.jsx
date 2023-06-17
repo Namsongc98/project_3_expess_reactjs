@@ -3,6 +3,7 @@ import { publicRoutes, privateRoutes } from "./routers/index.jsx";
 import DefaultLayout from "./component/Layout/index.jsx";
 import PriviteRouter from "./routers/PriviteRouter.jsx";
 import Admin from "./component/Page/Admin/Admin.jsx";
+// import NotPound from"./component/Page/NotPound"
 function App() {
   return (
     <>
@@ -24,6 +25,9 @@ function App() {
                 />
               );
             })}
+
+            {/* <Route path="*" element={<NotPound/>} /> */}
+
             <Route element={<PriviteRouter />}>
               {privateRoutes.map((route, index) => {
                 const Page = route.component;

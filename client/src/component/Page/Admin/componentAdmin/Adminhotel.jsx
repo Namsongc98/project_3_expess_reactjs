@@ -3,6 +3,10 @@ import "./Admin.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getHotel } from "../../../../app/hotelSlice";
 import axios from "axios";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Update from "./update";
 
 function Adminhotel() {
   const [imageDisplay, setImgDisplay] = useState([]);
@@ -11,6 +15,10 @@ function Adminhotel() {
   const [city, setCity] = useState("");
   const [qualityrom, setQualityrom] = useState(0);
   const [desribe, setDesribe] = useState("");
+  const [price, setPrice] = useState("");
+  const [checkExist, setExist] = useState(false);
+  const [idHotel, setOpenUpdate] = useState(null);
+
   const dispatch = useDispatch();
   const hotel = useSelector((state) => state.hotel.hotelAll.data);
 
@@ -20,30 +28,39 @@ function Adminhotel() {
 
   const handleHotel = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    for (let index = 0; index < image_homestay.length; index++) {
-      formData.append("photos", image_homestay[index]);
+
+    if (!image_homestay || !name_homestay || !city || !qualityrom || !desribe) {
+      handleExist();
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("name_homestay", name_homestay);
+        formData.append("image_homestay", image_homestay);
+        formData.append("city", city);
+        formData.append("qualityrom", qualityrom);
+        formData.append("desribe", desribe);
+        formData.append("price", price);
+        const response = await axios.post(
+          "http://localhost:8080/hotel/addhotel",
+          formData
+        );
+        dispatch(getHotel());
+        return response.data;
+      } catch (error) {
+        throw new Error(error);
+      }
     }
-    const newHotel = {
-      name_homestay,
-      image_homestay,
-      city,
-      qualityrom,
-      desribe,
-    };
-    console.log(newHotel);
+  };
+
+  //delete
+  const handleDlete = async (e, id) => {
+    e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/hotel/addhotel",
-        newHotel,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+      const response = await axios.delete(
+        `http://localhost:8080/hotel/deletehotel/${id}`
       );
-      console.log(response.data);
-      return response.data;
+      dispatch(getHotel());
+      return response;
     } catch (error) {
       throw new Error(error);
     }
@@ -52,23 +69,35 @@ function Adminhotel() {
   // chuc năng review hinh ảnh
   const handlePreview = (e) => {
     e.preventDefault();
-    setimghotel([...e.target.files]);
-    if (e.target.files) {
-      const fileImgArr = Array.from(e.target.files).map((img) =>
-        URL.createObjectURL(img)
-      );
-      setImgDisplay((img) => img.concat(fileImgArr));
-      Array.from(e.target.files).map((img) => URL.revokeObjectURL(img));
-    }
+    setimghotel(e.target.files[0]);
+    const fileimg = e.target.files[0];
+    fileimg.preview = URL.createObjectURL(fileimg);
+    setImgDisplay(fileimg);
   };
-  const renderImg = (source) => {
-    return source.map((img, index) => {
-      return <img src={img} className="w-[80px]" key={index} />;
-    });
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(imageDisplay?.preview);
+    };
+  }, [imageDisplay]);
+  // snackbar
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setExist(false);
+  };
+  const handleExist = () => {
+    setExist(true);
+  };
+  const handleUpdateUser = (idHotel) => {
+    setOpenUpdate(idHotel)
   };
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 relative">
       <div className="w-[100%] h-[60px] text-4xl font-semibold text-blue-800 ">
         <h1 className="text-center leading-[60px] hover:underline  hover:decoration-solid">
           List phòng khách sạn
@@ -102,7 +131,7 @@ function Adminhotel() {
                       value={name_homestay}
                       onChange={(e) => setName_homestay(e.target.value)}
                       autoComplete="given-name"
-                      className="block w-[200px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="px-2 block w-[200px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -121,7 +150,26 @@ function Adminhotel() {
                       name="qualityrom"
                       id="number"
                       autoComplete="given-name"
-                      className="block w-[200px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="px-2 block w-[200px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="qualityrom"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Price
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      type="number"
+                      name="qualityrom"
+                      id="number"
+                      autoComplete="given-name"
+                      className="px-2 block w-[200px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -143,7 +191,7 @@ function Adminhotel() {
                       value={desribe}
                       onChange={(e) => setDesribe(e.target.value)}
                       rows={3}
-                      className="block w-[300px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="px-2 block w-[300px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -173,12 +221,11 @@ function Adminhotel() {
               </div>
               {/* hình ảnh */}
               <div className="mb-8 flex flex-col justify-center items-center w-[50%]  ">
-                <div className="w-[300px] h-[140px] py-1.5 wp-img flex justify-start gap-[2px] overflow-hidden">
-                  {renderImg(imageDisplay)}
+                <div className="w-[200px] h-[140px] py-1.5 wp-img flex justify-start gap-[2px] overflow-hidden">
+                  <img src={imageDisplay.preview} className="w-[200px]" />
                 </div>
                 <input
                   type="file"
-                  multiple
                   className=" px-3 py-2 w-[100px] text-sm font-semibold"
                   onChange={(e) => handlePreview(e)}
                 />
@@ -211,9 +258,9 @@ function Adminhotel() {
               <th>Mô Tả</th>
               <th>Số phòng</th>
               <th>Thành Phố</th>
+              <th>Price</th>
               <th> Xóa</th>
               <th>Sửa </th>
-              <th>Chi tiêt phòng </th>
             </tr>
           </thead>
           <tbody>
@@ -222,24 +269,50 @@ function Adminhotel() {
                 <td>{index + 1}</td>
                 <td>{hotel.name_homestay}</td>
 
-                <td>{hotel.imageDisPlay}</td>
-                <td>{hotel.desribe}</td>
+                <td>
+                  <img src={hotel.image_homestay} alt="" className="w-[60px]" />
+                </td>
+                <td>{hotel.desribe.slice(0, 30)}...</td>
                 <td>{hotel.qualityrom}</td>
                 <td>{hotel.city}</td>
+                <td>{hotel.price}</td>
                 <td>
-                  <button>xóa</button>
+                  <button
+                    className="btn btn-delete"
+                    onClick={(e) => handleDlete(e, hotel.id_homestay)}
+                  >
+                    xóa
+                  </button>
                 </td>
                 <td>
-                  <button>Sửa</button>
-                </td>
-                <td>
-                  <button>Xem chi tiết</button>
+                  <button
+                    className="btn btn-edit"
+                    onClick={() => handleUpdateUser(hotel.id_homestay)}
+                  >
+                    Sửa
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <Stack spacing={2} sx={{ width: "100%" }}>
+          <Snackbar
+            open={checkExist}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Vui lòng nhập đầy đủ thông tin
+            </Alert>
+          </Snackbar>
+        </Stack>
       </div>
+      {idHotel && <Update  idHotel={idHotel} setOpenUpdate={setOpenUpdate}/>}
     </div>
   );
 }

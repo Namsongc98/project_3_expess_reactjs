@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./form.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { cleanState, loginUser } from "../../../app/useSlice";
+import { loginUser } from "../../../app/useSlice";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -12,17 +12,26 @@ function Login() {
   const [password_user, setPasswordUser] = useState("");
 
   const [checkExist, setExist] = useState(false);
-  const [success, setSuccess] = useState(false);
+ 
   const [sameEmail, setSameEmail] = useState(false);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  
-
   const error = useSelector((state) => state.user.error);
   const sussessStatus = useSelector((state) => state.user.starus);
+  const userData = useSelector((state) => state.user.loginUser);
+
+  useEffect(() => {
+    if (userData.roles === "admin") {
+      navigate("/admin");
+    } else if (userData.roles === "user") {
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+  }, [userData]);
 
   const currenUser = {
     email_user: email_user,
@@ -35,11 +44,9 @@ function Login() {
       handleExist();
       return;
     } else {
-      dispatch(loginUser(currenUser,navigate))
+      dispatch(loginUser(currenUser, navigate));
     }
   };
-
-
 
   useEffect(() => {
     if (error) {
@@ -48,15 +55,10 @@ function Login() {
   }, [error]);
   useEffect(() => {
     if (sussessStatus) {
-  
     }
   }, [sussessStatus]);
 
-  useEffect(() => {
-    dispatch(cleanState());
-  }, [dispatch]);
-
- 
+  
 
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -105,13 +107,14 @@ function Login() {
                 name="passwword"
                 className="input__form  h-[40px] w-[340px] mt-2 outline-none p-2"
                 value={password_user}
+                type="password"
                 onChange={(e) => setPasswordUser(e.target.value)}
               />
             </div>
             <p></p>
           </div>
           <div className="">
-            <button className="btn__register">Tham gia</button>
+            <button className="btn__register" >Tham gia</button>
           </div>
           <div className="flex justify-start items-center">
             <p className="">Bạn có tài khoản chưa?</p>
@@ -141,7 +144,6 @@ function Login() {
             </Snackbar>
           </Snackbar>
 
-         
           <Snackbar
             open={sameEmail}
             autoHideDuration={6000}
@@ -152,7 +154,7 @@ function Login() {
               severity="error"
               sx={{ width: "100%" }}
             >
-              {error}
+           {error}
             </Alert>
           </Snackbar>
         </Stack>

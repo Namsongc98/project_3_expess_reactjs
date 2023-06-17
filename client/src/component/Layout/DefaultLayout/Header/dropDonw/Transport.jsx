@@ -37,7 +37,7 @@ function Transport() {
         <ArrowDropDownIcon />
 
         <div
-          className={`popup-transport absolute w-80 rounded-md bg-white top-10 ${
+          className={`popup-transport absolute w-80 rounded-md bg-white top-10 z-[10] ${
             isToggleTransport ? `activeTransport` : `inactiveTransport`
           } `}
         >

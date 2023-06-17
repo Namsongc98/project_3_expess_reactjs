@@ -5,14 +5,16 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { useDispatch, useSelector } from "react-redux";
-import { cleanState, logout } from "../../../../../app/useSlice";
+import { logout } from "../../../../../app/useSlice";
 
 function DropProfile() {
-  const dispatch = useDispatch()
-  const displayUser = useSelector((state) => state.user.loginUser?.data);
+  const dispatch = useDispatch();
+  const displayUser = useSelector((state) => state.user.loginUser);
+  const displayAdmin = useSelector((state) => state.user.loginUser.roles);
+
   const [dropProfile, setDropProfile] = useState(false);
   const refWapper = useRef();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     let handleClose = (e) => {
       if (!refWapper.current.contains(e.target)) {
@@ -26,14 +28,13 @@ function DropProfile() {
   }, []);
 
   const handleLogout = () => {
-   dispatch(cleanState())
-   dispatch(logout())
-   navigate("/login")
+    dispatch(logout());
+    navigate("/login");
   };
 
   return (
     <>
-      <li className="flex items-center cursor-pointer relative popupProfile mr-10">
+      <li className="flex items-center cursor-pointer relative popupProfile mr-10 z-[10] h-auto">
         <div
           to=""
           className="flex justify-between items-center gap-2"
@@ -58,12 +59,25 @@ function DropProfile() {
             <li className="popup-transportitem hover:bg-gray-200 p-2">
               <Link to="/profile">
                 <PersonOutlineIcon
-                  className="text-blue-500 mr-5 font-normal"
+                  className="text-blue-500 mr-5 font-normal "
                   style={{ fontSize: "24px" }}
                 />
                 <span className="font-thin text-2xl">Hồ sơ</span>
               </Link>
             </li>
+            {displayAdmin === "admin" ? (
+              <li className="popup-transportitem hover:bg-gray-200 p-2">
+                <Link to="/admin">
+                  <PersonOutlineIcon
+                    className="text-blue-500 mr-5 font-normal"
+                    style={{ fontSize: "24px" }}
+                  />
+                  <span className="font-thin text-2xl">Admin</span>
+                </Link>
+              </li>
+            ) : (
+              <></>
+            )}
             <li
               className="popup-transportitem hover:bg-gray-200 p-2"
               onClick={handleLogout}
@@ -72,7 +86,7 @@ function DropProfile() {
                 className="text-blue-500 mr-5 font-normal"
                 style={{ fontSize: "24px" }}
               />
-              <span className="font-thin text-2xl">Dăng xuất</span>
+              <span className="font-thin text-2xl">Đăng xuất</span>
             </li>
           </ul>
         </div>

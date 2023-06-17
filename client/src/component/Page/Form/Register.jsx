@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import axios from "axios";
-import { cleanState, logout, postUser } from "../../../app/useSlice";
+
+import { logout, postUser } from "../../../app/useSlice";
 
 function Register() {
   //lấy giá trị input
@@ -31,6 +31,7 @@ function Register() {
 
   const navigate = useNavigate();
 
+  const status = useSelector(state=>(state.user.status))
 
   // regex_patter
   const regexEmai = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
@@ -50,6 +51,12 @@ function Register() {
     roles: "user",
   };
 
+  useEffect(()=>{
+    if(status===true){
+      navigate('/login')
+    }
+  },[status])
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,15 +67,13 @@ function Register() {
     } else if (!checkPassword) {
       return handlePassword();
     } else {
-      dispatch(postUser(newUser,navigate));
+      dispatch(postUser(newUser));
     }
   };
 
 
 
-  useEffect(() => {
-    dispatch(cleanState());
-  }, [dispatch]);
+
 
   //snackbar-------------
   const Alert = React.forwardRef(function Alert(props, ref) {
@@ -102,11 +107,16 @@ function Register() {
     setAlertEmail(false);
   };
 
+  // const handlRegister = ()=>{
+  //   dispatch(logout())
+  //   navigate('/register')
+  // }
+
   return (
     <div className="py-6 gap-20 relative ">
       <div className=" h-[146px] bg-[#0194f3] text-white leading-10 flex flex-col justify-center pl-10 gap-5 ">
         <h1 className="font-bold text-4xl">
-          Đằng kí thành viên của Tralveroka và trả nghiệm ưu đãi hấp dẫn
+          Đằng kí thành viên của Traveloka và trả nghiệm ưu đãi hấp dẫn
         </h1>
         <h3 className="font-medium text-3xl">
           Thật nhanh và an toàn hãy đằng kí ngay để được{" "}
@@ -146,7 +156,7 @@ function Register() {
           <img
             src={ticket_arworr}
             alt=""
-            className="w-16 font-bold text-4xl mp-5 "
+            className="w-16 mb-5 "
           />
           <h2 className="font-bold text-4xl">Trải nghiệm đặt chỗ suôn sẻ</h2>
           <h4 className="leading-10">
@@ -163,7 +173,7 @@ function Register() {
           onSubmit={(e) => handleSubmit(e)}
         >
           <h1 className="font-semibold text-4xl text-center">
-            Đăng Kí Thành Viên Tralveroka!
+            Đăng Kí Thành Viên Traveloka!
           </h1>
 
           <div className="flex   justify-between my-5">
@@ -181,7 +191,7 @@ function Register() {
 
             <div className="">
               <label htmlFor="lastname" className="font-semibold">
-                Lastname
+                Last name
               </label>
               <input
                 id="lastname"
@@ -209,6 +219,7 @@ function Register() {
               <input
                 className="input__form  h-[40px] w-[340px] mt-2 outline-none p-2"
                 value={password_user}
+                type="password"
                 onChange={(e) => setPasswordUser(e.target.value)}
               />
             </div>
@@ -274,7 +285,7 @@ function Register() {
         </Stack>
         <div className="footer__register ">
           <span>Bạn Đăng Kí Chưa?</span>
-          <Link to="/login" className="font-medium text-blue-600 ">
+          <Link to="/login" className="font-medium text-blue-600  ml-3">
             Đăng nhập
           </Link>
         </div>

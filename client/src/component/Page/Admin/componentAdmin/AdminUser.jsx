@@ -6,9 +6,12 @@ import { useSelector } from "react-redux";
 
 function AdminUser() {
   const [userData, setUserData] = useState();
+  const UserDataNotAdmin = userData?.filter((user)=>user.roles==="user")
+ 
 
-  let accepToken = useSelector((state) => state.user.loginUser.token);
 
+// get user
+  let accepToken = useSelector((state) => state.user.token);
   const dataUser = async (accepToken) => {
     try {
       const response = await axios.get("http://localhost:8080/users", {
@@ -17,7 +20,6 @@ function AdminUser() {
       setUserData(response.data.data);
       return userData;
     } catch (error) {
-      console.log(error);
       throw new Error(error);
     }
   };
@@ -26,22 +28,23 @@ function AdminUser() {
     dataUser(accepToken);
   }, []);
 
+//delete user
   const handleDelete = async (e, id) => {
     e.preventDefault();
-
     try {
       await axios.delete("http://localhost:8080/users/delete/" + id, {
         headers: { token: `Bearer ${accepToken}` },
       });
       dataUser(accepToken);
     } catch (error) {
+      console.log(error)
       throw new Error(error);
     }
   };
   const handleEdit = () => {
     e.preventDefault();
   };
-  console.log(userData);
+ 
 
 
   return (
@@ -64,7 +67,7 @@ function AdminUser() {
             </tr>
           </thead>
           <tbody>
-            {userData?.map((user, index) => (
+            {UserDataNotAdmin?.map((user, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{user.firstname + " " + " " + user.lastname}</td>
